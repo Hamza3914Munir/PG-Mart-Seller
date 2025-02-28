@@ -103,6 +103,7 @@ class _BottomCartViewState extends State<BottomCartView> {
             if(vacationIsOn || temporaryClose ){
               showCustomSnackBar(getTranslated('this_shop_is_close_now', context), context, isToaster: true);
             }else{
+              // print("Product tapped");
               showModalBottomSheet(context: context, isScrollControlled: true,
                   backgroundColor: Theme.of(context).primaryColor.withOpacity(0),
                   builder: (con) => CartBottomSheet(product: widget.product, callback: (){

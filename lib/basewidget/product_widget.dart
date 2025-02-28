@@ -28,6 +28,7 @@ class ProductWidget extends StatelessWidget {
         margin: const EdgeInsets.all(5),
         padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
         decoration: BoxDecoration(
+          border: Border.all(color: Theme.of(context).primaryColor),
           borderRadius: BorderRadius.circular(10),
           color: Theme.of(context).highlightColor,
           boxShadow: Provider.of<ThemeProvider>(context, listen: false).darkTheme? null : [BoxShadow(color: Colors.grey.withOpacity(0.2), spreadRadius: 1, blurRadius: 5)],),

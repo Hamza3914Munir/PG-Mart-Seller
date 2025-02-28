@@ -80,7 +80,8 @@ class _MoreScreenState extends State<MoreScreen> {
 
 
                 const Padding(padding: EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),
-                  child: Center(child: MoreHorizontalSection())),
+                  child: Center(
+                    child: MoreHorizontalSection())),
 
 
 
@@ -118,7 +119,7 @@ class _MoreScreenState extends State<MoreScreen> {
 
 
                           TitleButton(image: Images.category, title: getTranslated('CATEGORY', context),
-                            navigateTo: const AllCategoryScreen()),
+                            navigateTo: const AllCategoryScreen(isBacButtonExist: true)),
 
                           if(Provider.of<SplashProvider>(context, listen: false).configModel!.activeTheme != "default" && Provider.of<AuthController>(context, listen: false).isLoggedIn())
                           TitleButton(image: Images.compare, title: getTranslated('compare_products', context),

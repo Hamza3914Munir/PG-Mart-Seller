@@ -13,16 +13,23 @@ import 'package:flutter_sixvalley_ecommerce/basewidget/custom_app_bar.dart';
 import 'package:flutter_sixvalley_ecommerce/features/product/view/brand_and_category_product_screen.dart';
 import 'package:provider/provider.dart';
 
-class AllCategoryScreen extends StatelessWidget {
-  const AllCategoryScreen({super.key});
+class AllCategoryScreen extends StatefulWidget {
+  final bool isBacButtonExist;
+  const AllCategoryScreen({super.key, required this.isBacButtonExist});
 
+  @override
+  State<AllCategoryScreen> createState() => _AllCategoryScreenState();
+}
+
+class _AllCategoryScreenState extends State<AllCategoryScreen> {
   @override
   Widget build(BuildContext context) {
 
 
     return Scaffold(
 
-      appBar: CustomAppBar(title: getTranslated('CATEGORY', context)),
+      appBar: CustomAppBar(title: getTranslated('CATEGORY', context), isBackButtonExist: widget.isBacButtonExist),
+      
       body: Consumer<CategoryController>(
         builder: (context, categoryProvider, child) {
           return categoryProvider.categoryList!.isNotEmpty ? Row(children: [

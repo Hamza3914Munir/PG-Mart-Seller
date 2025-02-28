@@ -46,6 +46,7 @@ class BrandView extends StatelessWidget {
                     child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
                         Container(width: 50, height: 50,
                           decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(5)),
+                          border: Border.all(color: Theme.of(context).primaryColor),
                             color: Theme.of(context).highlightColor,
                             boxShadow: Provider.of<ThemeProvider>(context, listen: false).darkTheme ? null :
                             [BoxShadow(color: Colors.grey.withOpacity(0.12), spreadRadius: 1, blurRadius: 1, offset: const Offset(0, 1))]),

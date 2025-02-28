@@ -19,7 +19,7 @@ class CategoryWidget extends StatelessWidget {
         right: index+1 == length? Dimensions.paddingSizeDefault : Provider.of<LocalizationProvider>(context, listen: false).isLtr ? 0 : Dimensions.homePagePadding),
       child: Column( children: [
         Container(height: 70, width: 70, decoration: BoxDecoration(
-            border: Border.all(color: Theme.of(context).primaryColor.withOpacity(.125),width: .25),
+            border: Border.all(color: Theme.of(context).primaryColor),
             borderRadius: BorderRadius.circular(Dimensions.paddingSizeSmall),
             color: Theme.of(context).primaryColor.withOpacity(.125)),
           child: ClipRRect(borderRadius: BorderRadius.circular(Dimensions.paddingSizeSmall),

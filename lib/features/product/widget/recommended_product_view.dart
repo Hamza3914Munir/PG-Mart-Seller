@@ -1,4 +1,11 @@
+import 'package:flutter/material.dart' as material;
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_sixvalley_ecommerce/basewidget/show_custom_snakbar.dart';
+import 'package:flutter_sixvalley_ecommerce/features/cart/controllers/cart_controller.dart';
+import 'package:flutter_sixvalley_ecommerce/features/product/domain/model/product_details_model.dart';
+import 'package:flutter_sixvalley_ecommerce/features/product/provider/product_details_provider.dart';
+import 'package:flutter_sixvalley_ecommerce/features/product/widget/cart_bottom_sheet.dart';
 import 'package:flutter_sixvalley_ecommerce/helper/price_converter.dart';
 import 'package:flutter_sixvalley_ecommerce/localization/language_constrants.dart';
 import 'package:flutter_sixvalley_ecommerce/features/product/provider/product_provider.dart';
@@ -13,13 +20,28 @@ import 'package:flutter_sixvalley_ecommerce/features/home/shimmer/recommended_pr
 import 'package:flutter_sixvalley_ecommerce/features/product/view/product_details_screen.dart';
 import 'package:flutter_sixvalley_ecommerce/features/product/widget/favourite_button.dart';
 import 'package:provider/provider.dart';
-class RecommendedProductView extends StatelessWidget {
+class RecommendedProductView extends material.StatefulWidget {
   final bool fromAsterTheme;
   const RecommendedProductView({super.key,  this.fromAsterTheme = false});
 
+  @override
+  material.State<RecommendedProductView> createState() => _RecommendedProductViewState();
+}
 
+class _RecommendedProductViewState extends material.State<RecommendedProductView> {
   @override
   Widget build(BuildContext context) {
+    bool _isLoading = false;
+    _loadData( BuildContext context,int? productId,String? slug) async{
+    await Provider.of<ProductDetailsProvider>(context, listen: false).getProductDetails(context, slug.toString());
+   Provider.of<ProductDetailsProvider>(context, listen: false).removePrevReview();
+   await Provider.of<ProductDetailsProvider>(context, listen: false).initProduct(productId, slug, context);
+    Provider.of<ProductProvider>(context, listen: false).removePrevRelatedProduct();
+    Provider.of<ProductProvider>(context, listen: false).initRelatedProductList(productId.toString(), context);
+    Provider.of<ProductDetailsProvider>(context, listen: false).getCount(productId.toString(), context);
+    Provider.of<ProductDetailsProvider>(context, listen: false).getSharableLink(slug.toString(), context);
+
+  }
     return Container(
       padding: const EdgeInsets.only(top: Dimensions.paddingSizeSmall, bottom: Dimensions.paddingSizeDefault),
       color: Theme.of(context).primaryColor.withOpacity(.125),
@@ -34,6 +56,7 @@ class RecommendedProductView extends StatelessWidget {
                     transitionDuration: const Duration(milliseconds: 1000),
                     pageBuilder: (context, anim1, anim2) => ProductDetails(productId: recommended.recommendedProduct!.id, slug: recommended.recommendedProduct!.slug,),
                   ));
+                  
                 },
                 child: Stack(children: [
                     Positioned(top: -10, left: MediaQuery.of(context).size.width*0.35,
@@ -41,7 +64,7 @@ class RecommendedProductView extends StatelessWidget {
 
                     Column(children: [
 
-                      fromAsterTheme?
+                      widget.fromAsterTheme?
                           Column(children: [
                             Padding(padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),
                               child: Text(getTranslated('dont_miss_the_chance', context)??'',
@@ -97,7 +120,7 @@ class RecommendedProductView extends StatelessWidget {
                                         Row(mainAxisAlignment: MainAxisAlignment.start,crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
                                             Icon(Icons.star, color: Provider.of<ThemeProvider>(context).darkTheme ?
-                                            Colors.white : Colors.orange, size: 15),
+                                            material.Colors.white : material.Colors.orange, size: 15),
 
                                             Text(double.parse(ratting!).toStringAsFixed(1),
                                                 style: titilliumBold.copyWith(fontSize: Dimensions.fontSizeDefault)),
@@ -130,14 +153,93 @@ class RecommendedProductView extends StatelessWidget {
                                           child: Text(recommended.recommendedProduct!.name??'',maxLines: 2, overflow: TextOverflow.ellipsis,
                                               style: textRegular.copyWith(fontSize: Dimensions.fontSizeLarge))),
 
-                                        Padding(padding: const EdgeInsets.only(top: Dimensions.paddingSizeDefault),
-                                          child: Container(width: 110,height: 35,
-                                            decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(Dimensions.paddingSizeOverLarge)),
-                                              color: Theme.of(context).primaryColor),
-                                            child: Center(child: Text(getTranslated('buy_now', context)!,
-                                              style: const TextStyle(color: Colors.white)))))
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: Dimensions.paddingSizeDefault),
+                                          child: Row(
+                                            children: [
+                                              Container(width: 67,height: 35,
+                                                decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(Dimensions.paddingSizeOverLarge)),
+                                                  color: Theme.of(context).primaryColor),
+                                                child: Center(child: Text(getTranslated('buy_now', context)!,
+                                                  style: const TextStyle(color: material.Colors.white)))),
+                                                  const SizedBox(width: 8),
+                                                  
+                                                  // Provider.of<CartController>(context).addToCartLoading
+                                                  // _isLoading
+                                                  //  ?
+                                                  // const Center(child: Padding(
+                                                  //     padding: EdgeInsets.all(8.0),
+                                                  //     child: CircularProgressIndicator(),
+                                                  //   )):
+                                                  GestureDetector(
+                                                    onTap: () async {
+                                                      setState(() {
+                                                        _isLoading = true;
+                                                      });
+                                                      Provider.of<CartController>(context,listen: false).updateCartLoading(true);
+                                                      bool vacationIsOn = false;
+                                                      bool temporaryClose = false;
+                                                       print('Recommended Product ID: ${recommended.recommendedProduct!.id}');
+                                                    print('Recommended Product Slug: ${recommended.recommendedProduct!.slug}');
+                                                    await  _loadData(context,recommended.recommendedProduct!.id, recommended.recommendedProduct!.slug,);
+                                                   final provider =  await Provider.of<ProductDetailsProvider>(context,listen: false);
+                                                   provider.productDetailsModel;
+                                                   ProductDetailsModel? product = provider.productDetailsModel;
+                                                   if(product != null && product!.seller != null && product!.seller!.shop!.vacationEndDate != null){
+                                                    DateTime vacationDate = DateTime.parse(product!.seller!.shop!.vacationEndDate!);
+                                                    DateTime vacationStartDate = DateTime.parse(product!.seller!.shop!.vacationStartDate!);
+                                                   final today = DateTime.now();
+                                                   final difference = vacationDate.difference(today).inDays;
+                                                   final startDate = vacationStartDate.difference(today).inDays;
 
-                                      ],),
+                                               if(difference >= 0 && product!.seller!.shop!.vacationStatus! && startDate <= 0){
+                                               vacationIsOn = true;
+                                              }
+
+                                             else{
+                                           vacationIsOn = false;
+                                            }
+                                            }
+
+                                         if(product != null && product!.seller != null && product!.seller!.shop!.temporaryClose!){
+                                          temporaryClose = true;
+                                        }else{
+                                          temporaryClose = false;
+                                            }
+                                            setState(() {
+                                                        _isLoading = false;
+                                                      });
+                                            Provider.of<CartController>(context,listen: false).updateCartLoading(false);
+                                                      if(vacationIsOn || temporaryClose ){
+                                           showCustomSnackBar(getTranslated('this_shop_is_close_now', context), context, isToaster: true);
+                                         }else{
+                                       // print("Product tapped");
+                                              showModalBottomSheet(context: context, isScrollControlled: true,
+                                           backgroundColor: Theme.of(context).primaryColor.withOpacity(0),
+                                           builder: (con) => CartBottomSheet(product: product, callback: (){
+                                               showCustomSnackBar(getTranslated('added_to_cart', context), context, isError: false);
+                                            },));
+                                          }
+                                                      print('Hello, Flutter!');
+                                                    },
+                                                    child: Container(width: 90,height: 35,
+                                                                                                    decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(Dimensions.paddingSizeOverLarge)),
+                                                    color: Theme.of(context).primaryColor),
+                                                                      child: 
+                                                                      _isLoading
+                                                   ?
+                                                  const Center(child: Padding(
+                                                      padding: EdgeInsets.all(8.0),
+                                                      child: CircularProgressIndicator(),
+                                                    )):
+                                                   Center(child: Text(getTranslated('add_to_cart', context)!,
+                                                    style: const TextStyle(color: material.Colors.white)))),
+                                                  ),
+                                            ],
+                                          ))
+
+                                      ],
+                                      ),
                                   ),
 
                                 ],
@@ -180,7 +282,5 @@ class RecommendedProductView extends StatelessWidget {
       ),
     );
   }
-
-
 }
 

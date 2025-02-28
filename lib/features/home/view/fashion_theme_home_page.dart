@@ -177,7 +177,7 @@ class _FashionThemeHomePageState extends State<FashionThemeHomePage> {
                     return (categoryController.categoryList != null && categoryController.categoryList!.isNotEmpty)?
                     Padding(padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeExtraSmall),
                       child: TitleRow(title: getTranslated('CATEGORY', context),
-                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AllCategoryScreen())))): const SizedBox();
+                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AllCategoryScreen(isBacButtonExist: true))))): const SizedBox();
                   }
                 ),
                 const SizedBox(height: Dimensions.paddingSizeSmall),

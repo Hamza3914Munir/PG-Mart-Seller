@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_sixvalley_ecommerce/features/wishlist/view/wishlist_screen.dart';
 import 'package:flutter_sixvalley_ecommerce/helper/product_type.dart';
 import 'package:flutter_sixvalley_ecommerce/localization/language_constrants.dart';
 import 'package:flutter_sixvalley_ecommerce/main.dart';
@@ -17,6 +18,7 @@ import 'package:flutter_sixvalley_ecommerce/features/splash/provider/splash_prov
 import 'package:flutter_sixvalley_ecommerce/theme/provider/theme_provider.dart';
 import 'package:flutter_sixvalley_ecommerce/features/shop/provider/top_seller_provider.dart';
 import 'package:flutter_sixvalley_ecommerce/features/wishlist/provider/wishlist_provider.dart';
+import 'package:flutter_sixvalley_ecommerce/utill/color_resources.dart';
 import 'package:flutter_sixvalley_ecommerce/utill/custom_themes.dart';
 import 'package:flutter_sixvalley_ecommerce/utill/dimensions.dart';
 import 'package:flutter_sixvalley_ecommerce/utill/images.dart';
@@ -116,7 +118,23 @@ class _HomePageState extends State<HomePage> {
                 centerTitle: false,
                 automaticallyImplyLeading: false,
                 backgroundColor: Theme.of(context).highlightColor,
-                title: Image.asset(Images.logoWithNameImage, height: 35), actions: const [
+                title: Image.asset(Images.logoWithNameImage, height: 35), actions:  [
+                    IconButton(
+      icon: ColorFiltered(
+        colorFilter: ColorFilter.mode(
+          ColorResources.getPrimary(context), 
+          BlendMode.srcIn,
+        ),
+        child: Image.asset(
+          Images.wishlist, 
+          height: 25, 
+          width: 25, 
+        ),
+      ),
+      onPressed: () {
+        Navigator.push(context, MaterialPageRoute(builder: (_) => const WishListScreen()));
+      },
+    ),
                 CartWidgetHomePage(),
                 ],
               ),
@@ -172,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                       return (categoryController.categoryList != null && categoryController.categoryList!.isNotEmpty)?
                       Padding(padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraExtraSmall,vertical: Dimensions.paddingSizeExtraSmall),
                         child: TitleRow(title: getTranslated('CATEGORY', context),
-                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AllCategoryScreen()))),):const SizedBox();
+                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AllCategoryScreen(isBacButtonExist: true)))),):const SizedBox();
                     }
                   ),
                   const SizedBox(height: Dimensions.paddingSizeSmall),
@@ -351,9 +369,6 @@ class _HomePageState extends State<HomePage> {
                         ),
                       );
                     }),
-
-
-
                   ],
                 ),
               )

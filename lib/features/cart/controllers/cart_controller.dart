@@ -51,6 +51,11 @@ class CartController extends ChangeNotifier {
     _getData = true;
   }
 
+  void updateCartLoading(bool loading){
+    _addToCartLoading = loading;
+    ChangeNotifier();
+  }
+
   Future<ApiResponse> getCartDataAPI(BuildContext context, {bool reload = true}) async {
     if(reload){
       _isXyz = true;
