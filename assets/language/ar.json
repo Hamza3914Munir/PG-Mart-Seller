@@ -689,5 +689,6 @@
   "select_payment_method": "اختار طريقة الدفع",
   "otp_resent_successfully": "تمت إعادة إرسال OTP بنجاح",
   "contact_with_support" : "Contact with support",
-  "name": "Name"
+  "name": "Name",
+  "stores":"مخازن"
 }

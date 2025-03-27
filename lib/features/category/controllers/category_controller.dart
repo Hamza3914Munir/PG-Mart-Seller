@@ -20,6 +20,11 @@ class CategoryController extends ChangeNotifier {
   List<CategoryModel>? get categoryList => _categoryList;
   int? get categorySelectedIndex => _categorySelectedIndex;
 
+  void selectCategory(int index) {
+    _categorySelectedIndex = index;
+    notifyListeners();  
+  }
+
   Future<void> getCategoryList(bool reload) async {
     if (_categoryList == null || reload) {
       _categoryList = [];

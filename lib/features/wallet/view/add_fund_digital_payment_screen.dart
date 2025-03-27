@@ -62,16 +62,15 @@ class PaymentScreenState extends State<AddFundToWalletDigitalPayment> {
       ),
       onRefresh: () async {
         if (Platform.isAndroid) {
-          browser.webViewController.reload();
+          browser.webViewController?.reload();
         } else if (Platform.isIOS) {
-          browser.webViewController.loadUrl(urlRequest: URLRequest(url: await browser.webViewController.getUrl()));
+          browser.webViewController?.loadUrl(urlRequest: URLRequest(url: await browser.webViewController?.getUrl()));
         }
       },
     );
-    browser.pullToRefreshController = pullToRefreshController;
 
     await browser.openUrlRequest(
-      urlRequest: URLRequest(url: Uri.parse(selectedUrl!)),
+      urlRequest: URLRequest(url: WebUri(selectedUrl!)),
       options: InAppBrowserClassOptions(
         inAppWebViewGroupOptions: InAppWebViewGroupOptions(
           crossPlatform: InAppWebViewOptions(useShouldOverrideUrlLoading: true, useOnLoadResource: true),
@@ -79,6 +78,51 @@ class PaymentScreenState extends State<AddFundToWalletDigitalPayment> {
       ),
     );
   }
+
+  // void _initData() async {
+  //   browser = MyInAppBrowser(context);
+  //   if (Platform.isAndroid) {
+  //     await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
+
+  //     bool swAvailable = await AndroidWebViewFeature.isFeatureSupported(AndroidWebViewFeature.SERVICE_WORKER_BASIC_USAGE);
+  //     bool swInterceptAvailable = await AndroidWebViewFeature.isFeatureSupported(AndroidWebViewFeature.SERVICE_WORKER_SHOULD_INTERCEPT_REQUEST);
+
+  //     if (swAvailable && swInterceptAvailable) {
+  //       AndroidServiceWorkerController serviceWorkerController = AndroidServiceWorkerController.instance();
+  //       await serviceWorkerController.setServiceWorkerClient(AndroidServiceWorkerClient(
+  //         shouldInterceptRequest: (request) async {
+  //           if (kDebugMode) {
+  //             print(request);
+  //           }
+  //           return null;
+  //         },
+  //       ));
+  //     }
+  //   }
+
+  //   pullToRefreshController = PullToRefreshController(
+  //     options: PullToRefreshOptions(
+  //       color: Colors.black,
+  //     ),
+  //     onRefresh: () async {
+  //       if (Platform.isAndroid) {
+  //         browser.webViewController?.reload();
+  //       } else if (Platform.isIOS) {
+  //         browser.webViewController?.loadUrl(urlRequest: URLRequest(url: await browser.webViewController?.getUrl()));
+  //       }
+  //     },
+  //   );
+  //   browser.pullToRefreshController = pullToRefreshController;
+
+  //   await browser.openUrlRequest(
+  //     urlRequest: URLRequest(url: WebUri(selectedUrl!)),
+  //     options: InAppBrowserClassOptions(
+  //       inAppWebViewGroupOptions: InAppWebViewGroupOptions(
+  //         crossPlatform: InAppWebViewOptions(useShouldOverrideUrlLoading: true, useOnLoadResource: true),
+  //       ),
+  //     ),
+  //   );
+  // }
 
 
 

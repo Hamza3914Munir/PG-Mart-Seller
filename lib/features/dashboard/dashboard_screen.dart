@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sixvalley_ecommerce/features/category/view/all_category_screen.dart';
+import 'package:flutter_sixvalley_ecommerce/features/store/all_stores.dart';
 import 'package:flutter_sixvalley_ecommerce/helper/network_info.dart';
 import 'package:flutter_sixvalley_ecommerce/features/splash/provider/splash_provider.dart';
 import 'package:flutter_sixvalley_ecommerce/utill/custom_themes.dart';
@@ -45,7 +46,9 @@ class DashBoardScreenState extends State<DashBoardScreen> {
         const AsterThemeHomePage(): const FashionThemeHomePage()),
 
         if(!singleVendor)
-          NavigationModel(name: 'categories', icon: Images.category, screen: const AllCategoryScreen(isBacButtonExist: false)),
+        // AllSellerScreen
+        NavigationModel(name: 'stores', icon: Images.category, screen: const AllSellerScreen(isBacButtonExist: false)),
+          // NavigationModel(name: 'categories', icon: Images.category, screen: const AllCategoryScreen(isBacButtonExist: false)),
           NavigationModel(name: 'orders', icon: Images.shoppingImage, screen:  const OrderScreen(isBacButtonExist: false)),
           NavigationModel(name: 'more', icon: Images.moreImage, screen:  const MoreScreen()),
 

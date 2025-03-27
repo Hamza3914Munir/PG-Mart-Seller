@@ -693,5 +693,6 @@
   "select_payment_method": "Selecciona el método de pago",
   "otp_resent_successfully": "OTP reenviada exitosamente",
   "contact_with_support" : "Contact with support",
-  "name": "Name"
+  "name": "Name",
+  "stores":"víveres"
 }

@@ -23,7 +23,7 @@ class CartWidgetHomePage extends StatelessWidget {
                 Image.asset(Images.notification,
                     height: Dimensions.iconSizeDefault,
                     width: Dimensions.iconSizeDefault,
-                    color: ColorResources.getPrimary(context)),
+                    color: ColorResources.getHomeAppbarColor(context)),
                 Positioned(top: -4, right: -4,
                   child: CircleAvatar(radius: 7, backgroundColor: ColorResources.red,
                     child: Text(notificationProvider.notificationModel?.newNotificationItem.toString() ?? '0',
@@ -44,7 +44,7 @@ class CartWidgetHomePage extends StatelessWidget {
               Image.asset(Images.cartArrowDownImage,
                   height: Dimensions.iconSizeDefault,
                   width: Dimensions.iconSizeDefault,
-                  color: ColorResources.getPrimary(context)),
+                  color: ColorResources.getHomeAppbarColor(context)),
               Positioned(top: -4, right: -4,
                 child: Consumer<CartController>(builder: (context, cart, child) {
                   return CircleAvatar(radius: 7, backgroundColor: ColorResources.red,

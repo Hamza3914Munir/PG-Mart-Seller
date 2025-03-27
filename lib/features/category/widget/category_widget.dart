@@ -15,22 +15,28 @@ class CategoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(padding: EdgeInsets.only(left : Provider.of<LocalizationProvider>(context, listen: false).isLtr ? Dimensions.homePagePadding : 0,
-        right: index+1 == length? Dimensions.paddingSizeDefault : Provider.of<LocalizationProvider>(context, listen: false).isLtr ? 0 : Dimensions.homePagePadding),
+    return Padding(padding: EdgeInsets.only(left : 0,
+    // Provider.of<LocalizationProvider>(context, listen: false).isLtr ? Dimensions.homePagePadding : 0,
+        right: 0,
+        // index+1 == length? Dimensions.paddingSizeDefault : Provider.of<LocalizationProvider>(context, listen: false).isLtr ? 0 : Dimensions.homePagePadding
+        ),
       child: Column( children: [
-        Container(height: 70, width: 70, decoration: BoxDecoration(
+        Container(height: 220, width: double.infinity, decoration: BoxDecoration(
             border: Border.all(color: Theme.of(context).primaryColor),
-            borderRadius: BorderRadius.circular(Dimensions.paddingSizeSmall),
+            borderRadius: BorderRadius.circular(0
+              
+            ),
             color: Theme.of(context).primaryColor.withOpacity(.125)),
-          child: ClipRRect(borderRadius: BorderRadius.circular(Dimensions.paddingSizeSmall),
+          child: ClipRRect(borderRadius: BorderRadius.circular(0),
             child: CustomImage(image: '${Provider.of<SplashProvider>(context,listen: false).baseUrls!.categoryImageUrl}''/${category.icon}'))),
 
-        const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-        Center(child: SizedBox(width: 70,
-            child: Text(category.name!, textAlign: TextAlign.center, maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: titilliumRegular.copyWith(fontSize: Dimensions.fontSizeSmall,
-                  color: ColorResources.getTextTitle(context)))))]),
+        // const SizedBox(height: Dimensions.paddingSizeExtraSmall),
+        // Center(child: SizedBox(width: 70,
+        //     child: Text(category.name!, textAlign: TextAlign.center, maxLines: 2,
+        //       overflow: TextOverflow.ellipsis,
+        //       style: titilliumRegular.copyWith(fontSize: Dimensions.fontSizeSmall,
+        //           color: ColorResources.getTextTitle(context)))))
+                  ]),
     );
   }
 }

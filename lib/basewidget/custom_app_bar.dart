@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sixvalley_ecommerce/main.dart';
+import 'package:flutter_sixvalley_ecommerce/theme/provider/theme_provider.dart';
 import 'package:flutter_sixvalley_ecommerce/utill/custom_themes.dart';
 import 'package:flutter_sixvalley_ecommerce/utill/dimensions.dart';
 import 'package:flutter_sixvalley_ecommerce/utill/images.dart';
+import 'package:provider/provider.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
@@ -33,12 +35,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: AppBar(
 
           actions: showResetIcon? [reset!]:[],
-          backgroundColor: Theme.of(context).cardColor,
+          
+          backgroundColor: Provider.of<ThemeProvider>(context, listen: false).darkTheme? Theme.of(context).hintColor : Theme.of(context).primaryColor
+          // Theme.of(context).cardColor
+          ,
             toolbarHeight: 50,
-            iconTheme: IconThemeData(color: Theme.of(context).textTheme.bodyLarge?.color),
+            iconTheme: IconThemeData(color: Provider.of<ThemeProvider>(context, listen: false).darkTheme? Theme.of(context).primaryColor : Theme.of(context).cardColor),
             automaticallyImplyLeading: false,
             title: Text(title??'', style: textMedium.copyWith(
-                fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).textTheme.bodyLarge?.color),
+                fontSize: Dimensions.fontSizeLarge, color: Provider.of<ThemeProvider>(context, listen: false).darkTheme? Theme.of(context).primaryColor : Theme.of(context).cardColor),
                 maxLines: 1,textAlign: TextAlign.start, overflow: TextOverflow.ellipsis),
 
             centerTitle: true,
@@ -48,7 +53,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             clipBehavior: Clip.none,
             shadowColor: Theme.of(context).primaryColor.withOpacity(.1),
             leadingWidth: isBackButtonExist? 50 : 120,
-            leading: isBackButtonExist ? IconButton(icon:  Icon(Icons.arrow_back_ios_new_rounded, size: 18, color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(.75),),
+            leading: isBackButtonExist ? IconButton(icon:  Icon(Icons.arrow_back_ios_new_rounded, size: 18, color: Provider.of<ThemeProvider>(context, listen: false).darkTheme? Theme.of(context).primaryColor : Theme.of(context).cardColor),
                onPressed: () => onBackPressed != null ? onBackPressed!() : Navigator.pop(context)) :
 
             showLogo?

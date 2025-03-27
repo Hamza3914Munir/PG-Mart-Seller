@@ -14,6 +14,7 @@ import 'package:flutter_sixvalley_ecommerce/features/checkout/provider/checkout_
 import 'package:flutter_sixvalley_ecommerce/features/compare/provider/compare_provider.dart';
 import 'package:flutter_sixvalley_ecommerce/features/location/controllers/location_controller.dart';
 import 'package:flutter_sixvalley_ecommerce/features/loyaltyPoint/provider/loyalty_point_provider.dart';
+import 'package:flutter_sixvalley_ecommerce/features/store/seller_provider.dart';
 import 'package:flutter_sixvalley_ecommerce/push_notification/model/notification_body.dart';
 import 'package:flutter_sixvalley_ecommerce/features/deal/provider/featured_deal_provider.dart';
 import 'package:flutter_sixvalley_ecommerce/features/product/provider/home_category_product_provider.dart';
@@ -90,7 +91,9 @@ Future<void> main() async {
 
   runApp(MultiProvider(
     providers: [
+      // ShopProvider
       ChangeNotifierProvider(create: (context) => di.sl<CategoryController>()),
+      ChangeNotifierProvider(create: (context) => di.sl<ShopProvider>()),
       ChangeNotifierProvider(
           create: (context) => di.sl<HomeCategoryProductProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<TopSellerProvider>()),

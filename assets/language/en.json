@@ -699,5 +699,6 @@
   "select_payment_method": "Select payment method",
   "otp_resent_successfully": "OTP resent successfully",
   "contact_with_support" : "Contact with support",
-  "name": "Name"
+  "name": "Name",
+  "stores":"Stores"
 }

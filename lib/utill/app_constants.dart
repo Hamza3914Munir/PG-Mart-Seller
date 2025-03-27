@@ -56,6 +56,7 @@ class AppConstants {
   static const String sellerUri = '/api/v1/seller?seller_id=';
   static const String sellerProductUri = '/api/v1/seller/';
   static const String topSeller = '/api/v1/seller/top';
+  static const String allSeller = '/all-sellers';
   static const String trackingUri = '/api/v1/order/track?order_id=';
   static const String forgetPasswordUri = '/api/v1/auth/forgot-password';
   static const String getSupportTicketUri =

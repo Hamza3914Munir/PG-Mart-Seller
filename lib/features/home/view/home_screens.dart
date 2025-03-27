@@ -105,8 +105,10 @@ class _HomePageState extends State<HomePage> {
    List<String?> types =[getTranslated('new_arrival', context),getTranslated('top_product', context), getTranslated('best_selling', context),  getTranslated('discounted_product', context)];
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: RefreshIndicator(
+      body:
+      //  SafeArea(
+      //   child: 
+        RefreshIndicator(
           onRefresh: () async {
             await _loadData( true);
             await Provider.of<FlashDealProvider>(Get.context!, listen: false).getMegaDealList(true, false);
@@ -117,24 +119,24 @@ class _HomePageState extends State<HomePage> {
                 elevation: 0,
                 centerTitle: false,
                 automaticallyImplyLeading: false,
-                backgroundColor: Theme.of(context).highlightColor,
-                title: Image.asset(Images.logoWithNameImage, height: 35), actions:  [
+                backgroundColor: Theme.of(context).primaryColor,
+                title: Image.asset(Images.logoWithNameImage, height: 60,color: Theme.of(context).highlightColor,), actions:  [
                     IconButton(
-      icon: ColorFiltered(
-        colorFilter: ColorFilter.mode(
-          ColorResources.getPrimary(context), 
-          BlendMode.srcIn,
-        ),
-        child: Image.asset(
-          Images.wishlist, 
-          height: 25, 
-          width: 25, 
-        ),
-      ),
-      onPressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (_) => const WishListScreen()));
-      },
-    ),
+                         icon: ColorFiltered(
+                         colorFilter: ColorFilter.mode(
+                         ColorResources.getHomeAppbarColor(context), 
+                       BlendMode.srcIn,
+                        ),
+                      child: Image.asset(
+                    Images.wishlist, 
+                   height: 25, 
+                  width: 25, 
+                 ),
+               ),
+               onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) => const WishListScreen()));
+              },
+              ),
                 CartWidgetHomePage(),
                 ],
               ),
@@ -185,14 +187,14 @@ class _HomePageState extends State<HomePage> {
 
 
                   // Category
-                  Consumer<CategoryController>(
-                    builder: (context, categoryController,_) {
-                      return (categoryController.categoryList != null && categoryController.categoryList!.isNotEmpty)?
-                      Padding(padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraExtraSmall,vertical: Dimensions.paddingSizeExtraSmall),
-                        child: TitleRow(title: getTranslated('CATEGORY', context),
-                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AllCategoryScreen(isBacButtonExist: true)))),):const SizedBox();
-                    }
-                  ),
+                  // Consumer<CategoryController>(
+                  //   builder: (context, categoryController,_) {
+                  //     return (categoryController.categoryList != null && categoryController.categoryList!.isNotEmpty)?
+                  //     Padding(padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraExtraSmall,vertical: Dimensions.paddingSizeExtraSmall),
+                  //       child: TitleRow(title: getTranslated('CATEGORY', context),
+                  //           onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AllCategoryScreen(isBacButtonExist: true)))),):const SizedBox();
+                  //   }
+                  // ),
                   const SizedBox(height: Dimensions.paddingSizeSmall),
                    const CategoryView(isHomePage: true),
 
@@ -375,7 +377,7 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-      ),
+      // ),
     );
   }
 }

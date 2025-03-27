@@ -28,6 +28,8 @@ import 'package:flutter_sixvalley_ecommerce/features/product/domain/repo/search_
 import 'package:flutter_sixvalley_ecommerce/features/shop/domain/repo/shop_repo.dart';
 import 'package:flutter_sixvalley_ecommerce/features/shop/domain/repo/top_seller_repo.dart';
 import 'package:flutter_sixvalley_ecommerce/features/splash/domain/repo/splash_repo.dart';
+import 'package:flutter_sixvalley_ecommerce/features/store/seller_provider.dart';
+import 'package:flutter_sixvalley_ecommerce/features/store/seller_repository.dart';
 import 'package:flutter_sixvalley_ecommerce/features/support/domain/repo/support_ticket_repo.dart';
 import 'package:flutter_sixvalley_ecommerce/features/wallet/domain/repo/wallet_repo.dart';
 import 'package:flutter_sixvalley_ecommerce/features/wishlist/domain/repo/wishlist_repo.dart';
@@ -103,6 +105,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => LoyaltyPointRepo(dioClient: sl()));
   sl.registerLazySingleton(() => CheckOutRepo(dioClient: sl()));
   sl.registerLazySingleton(() => LocationRepository(dioClient: sl()));
+  sl.registerLazySingleton(() => SellerRepository(dioClient: sl()));
 
   // Provider
   sl.registerFactory(() => CategoryController(categoryRepo: sl()));
@@ -137,6 +140,7 @@ Future<void> init() async {
   sl.registerFactory(() => LoyaltyPointProvider(loyaltyPointRepo: sl()));
   sl.registerFactory(() => CheckOutProvider(checkOutRepo: sl()));
   sl.registerFactory(() => LocationController(locationRepo: sl()));
+  sl.registerFactory(() => ShopProvider(sellerRepository: sl()));
 
   // External
   final sharedPreferences = await SharedPreferences.getInstance();

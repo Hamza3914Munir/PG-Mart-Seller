@@ -130,6 +130,12 @@ class ColorResources {
         : Colors.purple;
   }
 
+  static Color getHomeAppbarColor(BuildContext context) {
+    return Provider.of<ThemeProvider>(context).darkTheme
+        ?Colors.purple : const Color(0xFFf0f0f0)
+         ;
+  }
+
   static Color getSearchBg(BuildContext context) {
     return Provider.of<ThemeProvider>(context).darkTheme
         ? const Color(0xFF585a5c)

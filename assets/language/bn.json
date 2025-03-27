@@ -693,5 +693,6 @@
   "select_payment_method": "অর্থপ্রদানের পদ্ধতি নির্বাচন করুন",
   "otp_resent_successfully": "OTP সফলভাবে পুনরায় পাঠানো হয়েছে",
   "contact_with_support" : "Contact with support",
-  "name": "Name"
+  "name": "Name",
+  "stores":"দোকান"
 }

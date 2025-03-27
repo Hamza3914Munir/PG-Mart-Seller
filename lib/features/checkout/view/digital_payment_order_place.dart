@@ -37,46 +37,87 @@ class DigitalPaymentScreenState extends State<DigitalPaymentScreen> {
   }
 
   void _initData() async {
-    browser = MyInAppBrowser(context);
-    if (Platform.isAndroid) {
-      await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
+  browser = MyInAppBrowser(context);
+  if (Platform.isAndroid) {
+    await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
 
-      bool swAvailable = await AndroidWebViewFeature.isFeatureSupported(AndroidWebViewFeature.SERVICE_WORKER_BASIC_USAGE);
-      bool swInterceptAvailable = await AndroidWebViewFeature.isFeatureSupported(AndroidWebViewFeature.SERVICE_WORKER_SHOULD_INTERCEPT_REQUEST);
+    bool swAvailable = await AndroidWebViewFeature.isFeatureSupported(AndroidWebViewFeature.SERVICE_WORKER_BASIC_USAGE);
+    bool swInterceptAvailable = await AndroidWebViewFeature.isFeatureSupported(AndroidWebViewFeature.SERVICE_WORKER_SHOULD_INTERCEPT_REQUEST);
 
-      if (swAvailable && swInterceptAvailable) {
-        AndroidServiceWorkerController serviceWorkerController = AndroidServiceWorkerController.instance();
-        await serviceWorkerController.setServiceWorkerClient(AndroidServiceWorkerClient(
-          shouldInterceptRequest: (request) async {
-            if (kDebugMode) {
-              print(request);
-            }
-            return null;
-          },
-        ));
-      }
+    if (swAvailable && swInterceptAvailable) {
+      AndroidServiceWorkerController serviceWorkerController = AndroidServiceWorkerController.instance();
+      await serviceWorkerController.setServiceWorkerClient(AndroidServiceWorkerClient(
+        shouldInterceptRequest: (request) async {
+          if (kDebugMode) {
+            print(request);
+          }
+          return null;
+        },
+      ));
     }
-
-    pullToRefreshController = PullToRefreshController(
-      options: PullToRefreshOptions(color: Colors.black),
-      onRefresh: () async {
-        if (Platform.isAndroid) {
-          browser.webViewController.reload();
-        } else if (Platform.isIOS) {
-          browser.webViewController.loadUrl(urlRequest: URLRequest(url: await browser.webViewController.getUrl()));
-        }
-      },
-    );
-    browser.pullToRefreshController = pullToRefreshController;
-
-    await browser.openUrlRequest(
-      urlRequest: URLRequest(url: Uri.parse(selectedUrl!)),
-      options: InAppBrowserClassOptions(inAppWebViewGroupOptions: InAppWebViewGroupOptions(
-          crossPlatform: InAppWebViewOptions(useShouldOverrideUrlLoading: true, useOnLoadResource: true),
-        ),
-      ),
-    );
   }
+
+  pullToRefreshController = PullToRefreshController(
+    options: PullToRefreshOptions(color: Colors.black),
+    onRefresh: () async {
+      if (Platform.isAndroid) {
+        browser.webViewController?.reload();
+      } else if (Platform.isIOS) {
+        browser.webViewController?.loadUrl(urlRequest: URLRequest(url: await browser.webViewController?.getUrl()));
+      }
+    },
+  );
+
+  await browser.openUrlRequest(
+    urlRequest: URLRequest(url: WebUri(selectedUrl!)),
+    options: InAppBrowserClassOptions(inAppWebViewGroupOptions: InAppWebViewGroupOptions(
+        crossPlatform: InAppWebViewOptions(useShouldOverrideUrlLoading: true, useOnLoadResource: true),
+      ),
+    )
+  );
+}
+
+  // void _initData() async {
+  //   browser = MyInAppBrowser(context);
+  //   if (Platform.isAndroid) {
+  //     await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
+
+  //     bool swAvailable = await AndroidWebViewFeature.isFeatureSupported(AndroidWebViewFeature.SERVICE_WORKER_BASIC_USAGE);
+  //     bool swInterceptAvailable = await AndroidWebViewFeature.isFeatureSupported(AndroidWebViewFeature.SERVICE_WORKER_SHOULD_INTERCEPT_REQUEST);
+
+  //     if (swAvailable && swInterceptAvailable) {
+  //       AndroidServiceWorkerController serviceWorkerController = AndroidServiceWorkerController.instance();
+  //       await serviceWorkerController.setServiceWorkerClient(AndroidServiceWorkerClient(
+  //         shouldInterceptRequest: (request) async {
+  //           if (kDebugMode) {
+  //             print(request);
+  //           }
+  //           return null;
+  //         },
+  //       ));
+  //     }
+  //   }
+
+  //   pullToRefreshController = PullToRefreshController(
+  //     options: PullToRefreshOptions(color: Colors.black),
+  //     onRefresh: () async {
+  //       if (Platform.isAndroid) {
+  //         browser.webViewController?.reload();
+  //       } else if (Platform.isIOS) {
+  //         browser.webViewController?.loadUrl(urlRequest: URLRequest(url: await browser.webViewController?.getUrl()));
+  //       }
+  //     },
+  //   );
+  //   // browser.pullToRefreshController = pullToRefreshController;
+
+  //   await browser.openUrlRequest(
+  //     urlRequest: URLRequest(url: WebUri(selectedUrl!)),
+  //     options: InAppBrowserClassOptions(inAppWebViewGroupOptions: InAppWebViewGroupOptions(
+  //         crossPlatform: InAppWebViewOptions(useShouldOverrideUrlLoading: true, useOnLoadResource: true),
+  //       ),
+  //     ),
+  //   );
+  // }
 
 
 

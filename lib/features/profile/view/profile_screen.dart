@@ -17,6 +17,7 @@ import 'package:flutter_sixvalley_ecommerce/basewidget/custom_textfield.dart';
 import 'package:flutter_sixvalley_ecommerce/basewidget/delete_account_bottom_sheet.dart';
 import 'package:flutter_sixvalley_ecommerce/basewidget/show_custom_snakbar.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -45,18 +46,47 @@ class ProfileScreenState extends State<ProfileScreen> {
   final picker = ImagePicker();
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
 
-  void _choose() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery, imageQuality: 50, maxHeight: 500, maxWidth: 500);
-    setState(() {
-      if (pickedFile != null) {
-        file = File(pickedFile.path);
-      } else {
-        if (kDebugMode) {
-          print('No image selected.');
-        }
+  // void _choose() async {
+  //   final pickedFile = await picker.pickImage(source: ImageSource.gallery, imageQuality: 50, maxHeight: 500, maxWidth: 500);
+  //   setState(() {
+  //     if (pickedFile != null) {
+  //       file = File(pickedFile.path);
+  //     } else {
+  //       if (kDebugMode) {
+  //         print('No image selected.');
+  //       }
+  //     }
+  //   });
+  // }
+  Future<void> _choose() async {
+  try {
+    // Only request permissions on Android (iOS doesn't need it for gallery access)
+    if (Platform.isAndroid) {
+      final status = await Permission.photos.request();
+      if (!status.isGranted) {
+        if (kDebugMode) print('Gallery permission denied');
+        return;
       }
+    }
+
+    // Pick image (iOS works without extra permissions)
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 50,
+      maxWidth: 500,
+      maxHeight: 500,
+    );
+
+    setState(() {
+      file = pickedFile != null ? File(pickedFile.path) : null;
     });
+  } catch (e) {
+    if (kDebugMode) print('Error picking image: $e');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Failed to pick image')),
+    );
   }
+}
 
   _updateUserAccount() async {
     String firstName = _firstNameController.text.trim();
