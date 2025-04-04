@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:654852995693:android:2b522f8523e451c0fd1d64",
+        "android_client_info": {
+          "package_name": "com.example.pgmart"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjO70oqUZygLalK3XN9BnN-rZ8JKaXwkQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:654852995693:android:c236c6357c353a78fd1d64",
         "android_client_info": {
           "package_name": "com.pgmart.pgmart"

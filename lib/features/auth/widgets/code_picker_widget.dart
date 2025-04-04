@@ -291,7 +291,7 @@ class CodePickerWidgetState extends State<CodePickerWidget> {
             barrierColor: widget.barrierColor,
             hideSearch: widget.hideSearch,
             closeIcon: widget.closeIcon,
-            flagDecoration: widget.flagDecoration,
+            flagDecoration: widget.flagDecoration, topBarPadding: EdgeInsets.all(0.0), hideHeaderText: true, headerAlignment: MainAxisAlignment.start, headerTextStyle: TextStyle(color: Colors.black),
           ),
         ),
       ),
