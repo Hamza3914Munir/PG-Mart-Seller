@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' ;
 import 'package:flutter_sixvalley_ecommerce/features/splash/domain/model/config_model.dart';
 import 'package:flutter_sixvalley_ecommerce/features/splash/provider/splash_provider.dart';
 import 'package:flutter_sixvalley_ecommerce/utill/dimensions.dart';
@@ -11,17 +11,23 @@ class AnnouncementScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String color = announcement!.color!.replaceAll('#', '0xff');
+    // String color = announcement!.color!.replaceAll('#', '0xff');
+  Color color = const Color(0xFFEEEEEE);
     String textColor = announcement!.textColor!.replaceAll('#', '0xff');
     return Container(decoration: BoxDecoration(
-      color: Color(int.parse(color))),
+      // color: Color(int.parse(color))
+      color: color
+      ),
         child: Row(children: [
           Expanded(child: MarqueeWidget(direction: Axis.horizontal,
-
               animationDuration: Duration(seconds: (announcement!.announcement!.length * .15).ceil()),
               backDuration: Duration(seconds: (announcement!.announcement!.length * .15).ceil()),
               child: Padding(padding: const EdgeInsets.only(left: Dimensions.paddingSizeDefault),
-                  child: Text(announcement!.announcement!, style: TextStyle(color: Color(int.parse(textColor))))))),
+                  child: 
+                  Text(
+                    announcement!.announcement!,                
+                   style: TextStyle(color: Color(int.parse(textColor))))
+                  ))),
             Container( width: 40, padding: const EdgeInsets.all(10), child: Center(
                 child: InkWell(onTap: (){
                       Provider.of<SplashProvider>(context,listen: false).changeAnnouncementOnOff(false);

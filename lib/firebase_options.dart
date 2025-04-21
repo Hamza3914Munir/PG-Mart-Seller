@@ -60,11 +60,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyC3qA4UoVmc9TLjY5BxnnnQDiE0lU60n_8',
-    appId: '1:654852995693:ios:fb55c0e06ce88ecefd1d64',
+    appId: '1:654852995693:ios:4c4e39c6a232dbcafd1d64',
     messagingSenderId: '654852995693',
     projectId: 'pg-mart-84d31',
     storageBucket: 'pg-mart-84d31.firebasestorage.app',
-    iosBundleId: 'com.pgmart.pgmart',
+    iosBundleId: 'com.pgmart.pgmart3',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(

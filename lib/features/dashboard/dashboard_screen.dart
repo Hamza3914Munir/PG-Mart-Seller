@@ -78,7 +78,7 @@ class DashBoardScreenState extends State<DashBoardScreen> {
         key: _scaffoldKey,
 
         body: PageStorage(bucket: bucket, child: _screens[_pageIndex].screen),
-        bottomNavigationBar: Container(height: 65,
+        bottomNavigationBar: Container(height: 80,
           decoration: BoxDecoration(borderRadius: const BorderRadius.vertical(top: Radius.circular(Dimensions.paddingSizeLarge)),
             color: Theme.of(context).cardColor,
             boxShadow: [BoxShadow(offset: const Offset(1,1), blurRadius: 2, spreadRadius: 1, color: Theme.of(context).primaryColor.withOpacity(.125))],),
@@ -128,7 +128,7 @@ class CustomMenuItem extends StatelessWidget {
       highlightColor: Colors.transparent,
       hoverColor: Colors.transparent,
       onTap: onTap,
-      child: Padding(padding: const EdgeInsets.all(8),
+      child: Padding(padding:  EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0, bottom: 9),
         child: SizedBox(width: isSelected ? 90 : 50, child: Column(crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: [
 

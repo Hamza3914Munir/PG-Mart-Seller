@@ -35,7 +35,7 @@
     </queries>
 
     <application
-        android:label="PG Mart"
+        android:label="PGMart"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
         android:networkSecurityConfig="@xml/network_security_config"

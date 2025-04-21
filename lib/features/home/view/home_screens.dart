@@ -141,11 +141,14 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
 
-              SliverToBoxAdapter(child: Provider.of<SplashProvider>(context, listen: false).configModel!.announcement!.status == '1'?
+              SliverToBoxAdapter(
+                child: Provider.of<SplashProvider>(context, listen: false).configModel!.announcement!.status == '1'?
               Consumer<SplashProvider>(
                 builder: (context, announcement, _){
                   return (announcement.configModel!.announcement!.announcement != null && announcement.onOff)?
-                  AnnouncementScreen(announcement: announcement.configModel!.announcement):const SizedBox();
+                  AnnouncementScreen(announcement: announcement.configModel!.announcement)
+                  
+                  :const SizedBox();
                 },
 
               ):const SizedBox(),),
