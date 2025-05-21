@@ -1,3 +1,1 @@
-abstract class NotificationServiceInterface{
-
-}
+abstract class NotificationServiceInterface{}

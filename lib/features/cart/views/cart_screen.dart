@@ -133,109 +133,361 @@ class CartScreenState extends State<CartScreen> {
             shippingAmount += cart.cartList[j].shippingCost??0;
 
           }
+return Scaffold(
+  bottomNavigationBar: (!cart.isXyz && cartList.isNotEmpty) 
+    ? Consumer<SplashProvider>(
+        builder: (context, configProvider,_) {
+          var minimumAmount;
+          var totalAmount = PriceConverter.convertPrice(context, amount+tax+shippingAmount-freeDeliveryAmountDiscount);
+          minimumAmount = totalAmount.substring(3);
+          double minAmountValue = double.parse(minimumAmount);
+          double amountNeeded = 30.00 - minAmountValue;
+          
+          return Container(
+            height: cartList.isNotEmpty ? (minAmountValue < 30 ? 200 : 180) : 0,
+            padding: const EdgeInsets.symmetric(
+              horizontal: Dimensions.paddingSizeLarge,
+              vertical: Dimensions.paddingSizeDefault,
+            ),
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(10), 
+                topLeft: Radius.circular(10)
+              ),
+            ),
+            child: cartList.isNotEmpty ? Column(children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, 
+                  children: [
+                    Row(children: [
+                      Text('${getTranslated('total_price', context)} ', 
+                        style: titilliumSemiBold.copyWith(
+                          fontSize: Dimensions.fontSizeLarge,
+                          color: Provider.of<ThemeProvider>(context, listen: false).darkTheme
+                            ? Theme.of(context).hintColor 
+                            : Theme.of(context).primaryColor
+                        )
+                      ),
+                      Text('${getTranslated('inc_vat_tax', context)}', 
+                        style: titilliumSemiBold.copyWith(
+                          fontSize: Dimensions.fontSizeSmall, 
+                          color: Theme.of(context).hintColor
+                        )
+                      )
+                    ]),
+                    Text(
+                      PriceConverter.convertPrice(context, amount+tax+shippingAmount-freeDeliveryAmountDiscount), 
+                      style: titilliumSemiBold.copyWith(
+                        color: Provider.of<ThemeProvider>(context, listen: false).darkTheme
+                          ? Theme.of(context).hintColor 
+                          : Theme.of(context).primaryColor,
+                        fontSize: Dimensions.fontSizeLarge
+                      )
+                    )
+                  ]
+                )
+              ),
 
+              InkWell(
+                onTap: minAmountValue >= 30 ? () {
+                  bool hasNull = false;
+                  bool minimum = false;
+                  double total = 0;
 
-          return Scaffold(bottomNavigationBar: (!cart.isXyz && cartList.isNotEmpty) ?
-            Consumer<SplashProvider>(
-              builder: (context, configProvider,_) {
+                  if(configProvider.configModel!.shippingMethod =='sellerwise_shipping') {
+                    for(int index = 0; index < cartProductList.length; index++) {
+                      for(CartModel cart in cartProductList[index]) {
+                        if(cart.productType == 'physical' && 
+                          sellerGroupList[index].shippingType == 'order_wise' && 
+                          Provider.of<CartController>(context, listen: false).shippingList![index].shippingIndex == -1) {
+                          hasNull = true;
+                          break;
+                        }
+                      }
+                    }
+                  }
 
+                  for(int index = 0; index < cartProductList.length; index++) {
+                    for(CartModel cart in cartProductList[index]) {
+                      total += (cart.price! - cart.discount!) * cart.quantity! + tax + shippingAmount;
+                      if(total < cart.minimumOrderAmountInfo!) {
+                        minimum = true;
+                      }
+                    }
+                  }
 
-                return Container(height: cartList.isNotEmpty? 130 : 0, padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge,
-                    vertical: Dimensions.paddingSizeDefault),
-
-                  decoration: BoxDecoration(color: Theme.of(context).cardColor,
-                    borderRadius: const BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))),
-                  child: cartList.isNotEmpty ?
-                  Column( children: [
-
-                    Padding(padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault),
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-
-                        Row(children: [
-                            Text('${getTranslated('total_price', context)} ', style: titilliumSemiBold.copyWith(
-                                fontSize: Dimensions.fontSizeLarge,
-                                color: Provider.of<ThemeProvider>(context, listen: false).darkTheme? Theme.of(context).hintColor : Theme.of(context).primaryColor)),
-                            Text('${getTranslated('inc_vat_tax', context)}', style: titilliumSemiBold.copyWith(
-                                fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).hintColor))]),
-
-                        Text(PriceConverter.convertPrice(context, amount+tax+shippingAmount-freeDeliveryAmountDiscount), style: titilliumSemiBold.copyWith(
-                            color: Provider.of<ThemeProvider>(context, listen: false).darkTheme? Theme.of(context).hintColor : Theme.of(context).primaryColor,
-                            fontSize: Dimensions.fontSizeLarge))])),
-
-
-
-
-                    InkWell(onTap: () {
-                          bool hasNull = false;
-                          bool minimum = false;
-                          double total = 0;
-
-
-                           if(configProvider.configModel!.shippingMethod =='sellerwise_shipping'){
-                            for(int index = 0; index < cartProductList.length; index++) {
-                              for(CartModel cart in cartProductList[index]) {
-                                if(cart.productType == 'physical' && sellerGroupList[index].shippingType == 'order_wise'  && Provider.of<CartController>(context, listen: false).shippingList![index].shippingIndex == -1) {
-                                  hasNull = true;
-                                  break;
-                                }
-                              }
-                            }
-                          }
-
-
-                            for(int index = 0; index < cartProductList.length; index++) {
-                              for(CartModel cart in cartProductList[index]) {
-                                total += (cart.price! - cart.discount!) * cart.quantity! + tax+ shippingAmount;
-                                if(total< cart.minimumOrderAmountInfo!) {
-                                  minimum = true;
-                                }
-                              }
-                            }
-
-
-
-
-
-                          if(configProvider.configModel?.guestCheckOut == 0 && !Provider.of<AuthController>(context, listen: false).isLoggedIn()){
-                            showModalBottomSheet(backgroundColor: Colors.transparent,context:context, builder: (_)=> const NotLoggedInBottomSheet());
-                          }
-                          else if (cart.cartList.isEmpty) {
-                            showCustomSnackBar(getTranslated('select_at_least_one_product', context), context);
-                          }
-                          else if(hasNull && configProvider.configModel!.shippingMethod =='sellerwise_shipping' && !onlyDigital){
-                            showCustomSnackBar(getTranslated('select_all_shipping_method', context), context);
-                          }
-
-                          else if(cart.chosenShippingList.isEmpty &&
-                              configProvider.configModel!.shippingMethod !='sellerwise_shipping' &&
-                              configProvider.configModel!.inhouseSelectedShippingType =='order_wise' && !onlyDigital){
-                            showCustomSnackBar(getTranslated('select_all_shipping_method', context), context);
-                          }else if(minimum){
-                            showCustomSnackBar(getTranslated('some_shop_not_full_fill_minimum_order_amount', context), context);
-                          }
-
-
-                          else {
-                            Navigator.push(context, MaterialPageRoute(builder: (_) => CheckoutScreen(quantity: totalQuantity,
-                              cartList: cartList,totalOrderAmount: amount,shippingFee: shippingAmount-freeDeliveryAmountDiscount, discount: discount,
-                              tax: tax, onlyDigital: sellerGroupList.length != totalPhysical, hasPhysical: totalPhysical > 0)));
-                          }
-                      },
-                      child: Container(decoration: BoxDecoration(color: Theme.of(context).primaryColor,
-                            borderRadius: BorderRadius.circular(Dimensions.paddingSizeSmall)),
-
-                        child: Center(child: Padding(padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall,
-                              vertical: Dimensions.fontSizeSmall),
-                            child: Text(getTranslated('checkout', context)!,
-                                style: titilliumSemiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
-                                    color: Colors.white)),
-                          ),
+                  if(configProvider.configModel?.guestCheckOut == 0 && 
+                    !Provider.of<AuthController>(context, listen: false).isLoggedIn()) {
+                    showModalBottomSheet(
+                      backgroundColor: Colors.transparent,
+                      context:context, 
+                      builder: (_)=> const NotLoggedInBottomSheet()
+                    );
+                  }
+                  else if (cart.cartList.isEmpty) {
+                    showCustomSnackBar(getTranslated('select_at_least_one_product', context), context);
+                  }
+                  else if(hasNull && configProvider.configModel!.shippingMethod =='sellerwise_shipping' && !onlyDigital) {
+                    showCustomSnackBar(getTranslated('select_all_shipping_method', context), context);
+                  }
+                  else if(cart.chosenShippingList.isEmpty &&
+                      configProvider.configModel!.shippingMethod !='sellerwise_shipping' &&
+                      configProvider.configModel!.inhouseSelectedShippingType =='order_wise' && !onlyDigital) {
+                    showCustomSnackBar(getTranslated('select_all_shipping_method', context), context);
+                  }
+                  else if(minimum) {
+                    showCustomSnackBar(getTranslated('some_shop_not_full_fill_minimum_order_amount', context), context);
+                  }
+                  else {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => CheckoutScreen(
+                      quantity: totalQuantity,
+                      cartList: cartList,
+                      totalOrderAmount: amount,
+                      shippingFee: shippingAmount-freeDeliveryAmountDiscount, 
+                      discount: discount,
+                      tax: tax, 
+                      onlyDigital: sellerGroupList.length != totalPhysical, 
+                      hasPhysical: totalPhysical > 0
+                    )));
+                  }
+                } : null,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: minAmountValue >= 30 
+                      ? Theme.of(context).primaryColor
+                      : Theme.of(context).primaryColor.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(Dimensions.paddingSizeSmall)
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Dimensions.paddingSizeSmall,
+                        vertical: Dimensions.fontSizeSmall
+                      ),
+                      child: Text(
+                        getTranslated('checkout', context)!,
+                        style: titilliumSemiBold.copyWith(
+                          fontSize: Dimensions.fontSizeDefault,
+                          color: Colors.white
                         ),
                       ),
                     ),
-                  ]):const SizedBox());
-              }
-            ) : null,
+                  ),
+                ),
+              ),
+              
+              const SizedBox(height: 8),
+              
+              minAmountValue < 30
+                ? Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor.withOpacity(0.1),
+                      borderRadius: const BorderRadius.all(Radius.circular(7))
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.info_outline, 
+                            size: 16, 
+                            color: Theme.of(context).colorScheme.error),
+                          const SizedBox(width: 6),
+                          Text(
+                            'AED ${amountNeeded.toStringAsFixed(2)} needed to reach minimum order',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.error,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                : Container(
+                    decoration: BoxDecoration(
+                      color: Colors.green.withOpacity(0.1),
+                      borderRadius: const BorderRadius.all(Radius.circular(7))
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.check_circle_outline, 
+                            size: 16, 
+                            color: Colors.green),
+                          SizedBox(width: 6),
+                          Text(
+                            'Minimum order requirement met',
+                            style: TextStyle(
+                              color: Colors.green,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+            ]) : const SizedBox(),
+          );
+        }
+      ) 
+    : null,
+  
+
+          // return Scaffold(bottomNavigationBar: (!cart.isXyz && cartList.isNotEmpty) ?
+          //   Consumer<SplashProvider>(
+          //     builder: (context, configProvider,_) {
+          //     var minimumAmount;
+          //     var totalAmount = PriceConverter.convertPrice(context, amount+tax+shippingAmount-freeDeliveryAmountDiscount);
+          //      minimumAmount = totalAmount.substring(3);
+          //      double minAmountValue = double.parse(minimumAmount);
+
+
+          //      double amountNeeded = 30.00 - minAmountValue;
+          //       return Container(height: cartList.isNotEmpty? 180 : 0, padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge,
+          //           vertical: Dimensions.paddingSizeDefault),
+
+          //         decoration: BoxDecoration(color: Theme.of(context).cardColor,
+          //           borderRadius: const BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))),
+          //         child: cartList.isNotEmpty ?
+          //         Column( children: [
+
+          //           Padding(padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault),
+          //             child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+
+          //               Row(children: [
+          //                   Text('${getTranslated('total_price', context)} ', style: titilliumSemiBold.copyWith(
+          //                       fontSize: Dimensions.fontSizeLarge,
+          //                       color: Provider.of<ThemeProvider>(context, listen: false).darkTheme? Theme.of(context).hintColor : Theme.of(context).primaryColor)),
+          //                   Text('${getTranslated('inc_vat_tax', context)}', style: titilliumSemiBold.copyWith(
+          //                       fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).hintColor))]),
+
+          //               Text(PriceConverter.convertPrice(context, amount+tax+shippingAmount-freeDeliveryAmountDiscount), style: titilliumSemiBold.copyWith(
+          //                   color: Provider.of<ThemeProvider>(context, listen: false).darkTheme? Theme.of(context).hintColor : Theme.of(context).primaryColor,
+          //                   fontSize: Dimensions.fontSizeLarge)
+          //                   )
+          //                   ])),
+
+
+          //           InkWell(onTap: () {
+          //                 bool hasNull = false;
+          //                 bool minimum = false;
+          //                 double total = 0;
+
+
+          //                  if(configProvider.configModel!.shippingMethod =='sellerwise_shipping'){
+          //                   for(int index = 0; index < cartProductList.length; index++) {
+          //                     for(CartModel cart in cartProductList[index]) {
+          //                       if(cart.productType == 'physical' && sellerGroupList[index].shippingType == 'order_wise'  && Provider.of<CartController>(context, listen: false).shippingList![index].shippingIndex == -1) {
+          //                         hasNull = true;
+          //                         break;
+          //                       }
+          //                     }
+          //                   }
+          //                 }
+
+
+          //                   for(int index = 0; index < cartProductList.length; index++) {
+          //                     for(CartModel cart in cartProductList[index]) {
+          //                       print('minimums amount ${cart.minimumOrderAmountInfo!}');
+          //                       total += (cart.price! - cart.discount!) * cart.quantity! + tax+ shippingAmount;
+          //                       if(total< cart.minimumOrderAmountInfo!) {
+          //                         minimum = true;
+          //                       }
+          //                     }
+          //                   }
+                           
+
+          //                 if(configProvider.configModel?.guestCheckOut == 0 && !Provider.of<AuthController>(context, listen: false).isLoggedIn()){
+          //                   showModalBottomSheet(backgroundColor: Colors.transparent,context:context, builder: (_)=> const NotLoggedInBottomSheet());
+          //                 }
+          //                 else if (cart.cartList.isEmpty) {
+          //                   showCustomSnackBar(getTranslated('select_at_least_one_product', context), context);
+          //                 }
+          //                 else if(hasNull && configProvider.configModel!.shippingMethod =='sellerwise_shipping' && !onlyDigital){
+          //                   showCustomSnackBar(getTranslated('select_all_shipping_method', context), context);
+          //                 }
+
+          //                 else if(cart.chosenShippingList.isEmpty &&
+          //                     configProvider.configModel!.shippingMethod !='sellerwise_shipping' &&
+          //                     configProvider.configModel!.inhouseSelectedShippingType =='order_wise' && !onlyDigital){
+          //                   showCustomSnackBar(getTranslated('select_all_shipping_method', context), context);
+          //                 }else if(minimum){
+          //                   showCustomSnackBar(getTranslated('some_shop_not_full_fill_minimum_order_amount', context), context);
+          //                 }
+
+
+          //                 else {
+          //                   Navigator.push(context, MaterialPageRoute(builder: (_) => CheckoutScreen(quantity: totalQuantity,
+          //                     cartList: cartList,totalOrderAmount: amount,shippingFee: shippingAmount-freeDeliveryAmountDiscount, discount: discount,
+          //                     tax: tax, onlyDigital: sellerGroupList.length != totalPhysical, hasPhysical: totalPhysical > 0)));
+          //                 }
+          //             },
+          //             child: Container(decoration: BoxDecoration(color: Theme.of(context).primaryColor,
+          //                   borderRadius: BorderRadius.circular(Dimensions.paddingSizeSmall)),
+
+          //               child: Center(child: Padding(padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall,
+          //                     vertical: Dimensions.fontSizeSmall),
+          //                   child: Text(getTranslated('checkout', context)!,
+          //                       style: titilliumSemiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+          //                           color: Colors.white)),
+          //                 ),
+          //               ),
+          //             ),
+          //           ),
+          //           const SizedBox(height: 5),
+                    
+          //            minAmountValue < 30 ?
+          //               Container(
+          //                 decoration: BoxDecoration(color: Theme.of(context).primaryColor,
+          //                         borderRadius: const BorderRadius.all(Radius.circular(7))),
+          //                 child: Padding(
+          //                   padding: const EdgeInsets.only(top: 5,bottom: 5),
+          //                   child: Row(
+          //                     children: [
+          //                       Padding(
+          //                         padding: const EdgeInsets.only(left: 6),
+          //                         child: Icon(Icons.info_outline, color: Colors.red,),
+          //                       ),
+          //                       SizedBox(width: 6),
+          //                       Text(
+          //                           'AED ${amountNeeded.toStringAsFixed(2)} needed to reach minimum order',  
+          //                           style: TextStyle(color: Colors.white),            
+          //                         ),
+          //                     ],
+          //                   ),
+          //                 ),
+          //               ) : 
+          //                   Container(
+          //                   decoration: BoxDecoration(color: Theme.of(context).primaryColor,
+          //                           borderRadius: const BorderRadius.all(Radius.circular(7))),
+          //                   child: const Padding(
+          //                     padding: EdgeInsets.only(top: 5,bottom: 5),
+          //                     child: Row(
+          //                       children: [
+          //                         Padding(
+          //                           padding: EdgeInsets.only(left: 6),
+          //                           child: Icon(Icons.check_box_rounded, color: Colors.green,),
+          //                         ),
+          //                         SizedBox(width: 6),
+          //                         Text(
+          //                             'you reached the minimum order',  
+          //                             style: TextStyle(color: Colors.white),            
+          //                           ),
+          //                       ],
+          //                     ),
+          //                   ),
+          //                 )
+          //                 ,
+         
+          //         ]):const SizedBox());
+          //     }
+          //   ) :  null,
             appBar: CustomAppBar(title: getTranslated('my_cart', context)),
             body: Column(children: [
 

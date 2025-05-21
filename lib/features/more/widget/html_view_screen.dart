@@ -20,7 +20,7 @@ class HtmlViewScreen extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               child: Html(
                 style: {
-                  'html': Style(textAlign: TextAlign.justify)
+                  'html': Style(textAlign: TextAlign.left)
                 },
                 data: url,
               ),

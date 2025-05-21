@@ -10,7 +10,6 @@ import 'package:flutter_sixvalley_ecommerce/basewidget/custom_slider/custom_slid
 import 'package:provider/provider.dart';
 
 
-
 class BannersView extends StatelessWidget {
   const BannersView({super.key});
 
@@ -24,16 +23,17 @@ class BannersView extends StatelessWidget {
             return Stack(children: [
               bannerProvider.mainBannerList != null ? bannerProvider.mainBannerList!.isNotEmpty ?
               SizedBox(height: width * 0.39,width: width, child: Column(children: [
-                SizedBox(height: width * 0.33, width: width,
+                SizedBox(height: width * 0.39, width: width,
                     child: CarouselSlider.builder(options: CarouselOptions(
                         aspectRatio: 4/1,
-                        viewportFraction: 0.9,
+                        viewportFraction: 1.0,
                         autoPlay: true,
                         enlargeFactor: .1,
                         enlargeCenterPage: true,
                         disableCenter: true,
                         onPageChanged: (index, reason) {
-                          Provider.of<BannerController>(context, listen: false).setCurrentIndex(index);}),
+                          Provider.of<BannerController>(context, listen: false).setCurrentIndex(index);}
+                          ),
                         itemCount: bannerProvider.mainBannerList!.isEmpty ? 1 : bannerProvider.mainBannerList!.length,
                         itemBuilder: (context, index, _) {
 
@@ -42,8 +42,8 @@ class BannersView extends StatelessWidget {
                                 bannerProvider.mainBannerList![index].resourceType =='product'?
                                 bannerProvider.mainBannerList![index].product : null,
                                 bannerProvider.mainBannerList![index].resourceType);},
-                          child: ClipRRect(borderRadius: BorderRadius.circular(Dimensions.paddingSizeSmall),
-                            child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(Dimensions.paddingSizeSmall),
+                          child: ClipRRect(borderRadius: BorderRadius.circular(0),
+                            child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(0),
                               color: Provider.of<ThemeProvider>(context, listen: false).darkTheme?
                               Theme.of(context).primaryColor.withOpacity(.1) :
                               Theme.of(context).primaryColor.withOpacity(.05)),
@@ -72,7 +72,5 @@ class BannersView extends StatelessWidget {
       ],
     );
   }
-
-
 }
 

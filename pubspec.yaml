@@ -29,7 +29,7 @@ dependencies:
   photo_view: ^0.14.0
   firebase_core: ^2.27.0
   firebase_messaging: ^14.7.0
-  flutter_local_notifications: ^16.1.0
+  flutter_local_notifications: ^18.0.0
   path_provider: ^2.0.1
   google_sign_in: ^6.1.6
   flutter_facebook_auth:
@@ -43,7 +43,7 @@ dependencies:
   flutter_typeahead: ^4.8.0
   marquee: ^2.2.1
   flutter_rating_bar: ^4.0.0
-  flutter_widget_from_html: ^0.14.7
+  flutter_widget_from_html: ^0.15.0
   flutter_widget_from_html_core: ^0.14.7
   flutter_html_table: ^3.0.0-alpha.3
   fluttertoast: ^8.0.9
@@ -75,11 +75,11 @@ dependencies:
   file_picker: ^6.1.1
   carousel_slider: ^5.0.0
   audio_session: ^0.1.21
-  webview_flutter: ^4.8.0
-  webview_flutter_android: ^3.16.3
-  webview_flutter_wkwebview: ^3.14.0
+  webview_flutter: ^4.9.0
+  webview_flutter_android: ^4.0.1
+  webview_flutter_wkwebview: ^3.17.0
   url_launcher: ^6.3.1
-  flutter_inappwebview: ^6.0.0
+  flutter_inappwebview: ^6.1.1
   geolocator: ^13.0.2
 
 

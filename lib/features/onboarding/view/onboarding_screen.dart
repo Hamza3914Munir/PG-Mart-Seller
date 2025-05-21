@@ -25,19 +25,29 @@ class OnBoardingScreen extends StatelessWidget {
 
           Consumer<OnBoardingProvider>(
             builder: (context, onBoardingList, child) => ListView(children: [
-                SizedBox(height: height*0.75,
-                  child: PageView.builder(
+                SizedBox(height: height,
+                  child:  PageView.builder(
                     itemCount: onBoardingList.onBoardingList.length,
                     controller: _pageController,
                     itemBuilder: (context, index) {
-                      return Padding(padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
-                        child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.end, children: [
-                            Image.asset(onBoardingList.onBoardingList[index].imageUrl,),
-                            Padding(padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault),
-                              child: Text(onBoardingList.onBoardingList[index].title, style: titilliumBold.copyWith(fontSize: 18), textAlign: TextAlign.center),),
-                            Text(onBoardingList.onBoardingList[index].description, textAlign: TextAlign.center, style: titilliumRegular.copyWith(
-                              fontSize: Dimensions.fontSizeDefault)),
+                      return Padding(
+                        padding: const EdgeInsets.all(0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                if (onBoardingList.selectedIndex == onBoardingList.onBoardingList.length - 1) {
+                                  Provider.of<SplashProvider>(context, listen: false).disableIntro();
+                                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const AuthScreen()));
+                                } else {
+                                  _pageController.nextPage(duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
+                                }
+                              },
+                              child: Image.asset(onBoardingList.onBoardingList[index].imageUrl),
+                            ),
                             const SizedBox(height: Dimensions.paddingSizeDefault),
                           ],
                         ),
@@ -47,44 +57,67 @@ class OnBoardingScreen extends StatelessWidget {
                       onBoardingList.changeSelectIndex(index);
                     },
                   ),
+
+                  // PageView.builder(
+                  //   itemCount: onBoardingList.onBoardingList.length,
+                  //   controller: _pageController,
+                  //   itemBuilder: (context, index) {
+                  //     return Padding(padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                  //       child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center,
+                  //         mainAxisAlignment: MainAxisAlignment.end, children: [
+                  //           Image.asset(onBoardingList.onBoardingList[index].imageUrl,),
+                  //           Padding(padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault),
+                  //             child: Text(onBoardingList.onBoardingList[index].title, style: titilliumBold.copyWith(fontSize: 18), textAlign: TextAlign.center),),
+                  //           Text(onBoardingList.onBoardingList[index].description, textAlign: TextAlign.center, style: titilliumRegular.copyWith(
+                  //             fontSize: Dimensions.fontSizeDefault)),
+                  //           const SizedBox(height: Dimensions.paddingSizeDefault),
+                  //         ],
+                  //       ),
+                  //     );
+                  //   },
+                  //   onPageChanged: (index) {
+                  //     onBoardingList.changeSelectIndex(index);
+                  //   },
+                  // ),
                 ),
 
 
-                Padding(padding: const EdgeInsets.all(Dimensions.paddingSizeExtraLarge),
-                  child: Stack(children: [
-                    if(onBoardingList.onBoardingList.isNotEmpty)
-                    Center(child: SizedBox(height: 50, width: 50,
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor.withOpacity(.6)),
-                          value: (onBoardingList.selectedIndex + 1) / onBoardingList.onBoardingList.length,
-                          backgroundColor: Theme.of(context).primaryColor.withOpacity(.125),
-                        ),
-                      ),
-                    ),
-                    Align(alignment: Alignment.center,
-                      child: GestureDetector(
-                        onTap: () {
-                          if (onBoardingList.selectedIndex == onBoardingList.onBoardingList.length - 1) {
-                            Provider.of<SplashProvider>(context, listen: false).disableIntro();
-                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const AuthScreen()));
-                          } else {
-                            _pageController.nextPage(duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
-                          }
-                        },
-                        child: Container(
-                          height: 40,
-                          width: 40,
-                          margin: const EdgeInsets.only(top: 5),
-                          decoration: const BoxDecoration(shape: BoxShape.circle,),
-                          child: Icon(onBoardingList.selectedIndex == onBoardingList.onBoardingList.length - 1 ? Icons.check : Icons.navigate_next,
-                            color: Theme.of(context).primaryColor,
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ]),
-                )
+                // Padding(
+                //   padding: const EdgeInsets.all(Dimensions.paddingSizeExtraLarge),
+                //   child: Stack(children: [
+                //     if(onBoardingList.onBoardingList.isNotEmpty)
+                //     Center(child: SizedBox(height: 50, width: 50,
+                //         child: CircularProgressIndicator(
+                //           valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor.withOpacity(.6)),
+                //           value: (onBoardingList.selectedIndex + 1) / onBoardingList.onBoardingList.length,
+                //           backgroundColor: Theme.of(context).primaryColor.withOpacity(.125),
+                //         ),
+                //       ),
+                //     ),
+                //     Align(alignment: Alignment.center,
+                //       child: GestureDetector(
+                //         onTap: () {
+                //           if (onBoardingList.selectedIndex == onBoardingList.onBoardingList.length - 1) {
+                //             Provider.of<SplashProvider>(context, listen: false).disableIntro();
+                //             Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const AuthScreen()));
+                //           } else {
+                //             _pageController.nextPage(duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
+                //           }
+                //         },
+                //         child: Container(
+                //           height: 40,
+                //           width: 40,
+                //           margin: const EdgeInsets.only(top: 5),
+                //           decoration: const BoxDecoration(shape: BoxShape.circle,),
+                //           child: Icon(onBoardingList.selectedIndex == onBoardingList.onBoardingList.length - 1 ? Icons.check : Icons.navigate_next,
+                //             color: Theme.of(context).primaryColor,
+                //             size: 30,
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //   ]),
+                // )
               ],
             ),
           ),

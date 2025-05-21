@@ -15,19 +15,28 @@ class OnBoardingRepo{
     try {
       List<OnboardingModel> onBoardingList = [
         OnboardingModel(
-          'assets/images/onboarding_image_one.png',
-          '${getTranslated('on_boarding_title_one', context)} ${AppConstants.appName}',
-          getTranslated('on_boarding_description_one', context),
+          // 'assets/images/onboarding_image_one.png',
+          'assets/images/onboarding_image_1.jpg',
+          //  'nm',
+          // 'mnk'
+          // '${getTranslated('on_boarding_title_one', context)} ${AppConstants.appName}',
+          // getTranslated('on_boarding_description_one', context),
         ),
         OnboardingModel(
-          'assets/images/onboarding_image_two.png',
-          getTranslated('on_boarding_title_two', context),
-          getTranslated('on_boarding_description_two', context),
+          // 'assets/images/onboarding_image_two.png',
+          'assets/images/onboarding_image_2.jpg',
+          //  'nm',
+          // 'mnk'
+          // getTranslated('on_boarding_title_two', context),
+          // getTranslated('on_boarding_description_two', context),
         ),
         OnboardingModel(
-          'assets/images/onboarding_image_three.png',
-          getTranslated('on_boarding_title_three', context),
-          getTranslated('on_boarding_description_three', context),
+          // 'assets/images/onboarding_image_three.png',
+          'assets/images/onboarding_image_3.jpg',
+          // 'nm',
+          // 'mnk'
+          // getTranslated('on_boarding_title_three', context),
+          // getTranslated('on_boarding_description_three', context),
         ),
       ];
 

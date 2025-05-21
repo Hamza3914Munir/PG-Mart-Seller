@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sixvalley_ecommerce/features/loyaltyPoint/provider/loyalty_point_provider.dart';
+import 'package:flutter_sixvalley_ecommerce/features/more/cancellationpolicy.dart';
+import 'package:flutter_sixvalley_ecommerce/features/more/frequentaskedquestions.dart';
+import 'package:flutter_sixvalley_ecommerce/features/more/privacypolicyscreen.dart';
+import 'package:flutter_sixvalley_ecommerce/features/more/refundpolicy.dart';
+import 'package:flutter_sixvalley_ecommerce/features/more/returnpolicyscreen.dart';
+import 'package:flutter_sixvalley_ecommerce/features/more/termsconditions.dart';
 import 'package:flutter_sixvalley_ecommerce/helper/price_converter.dart';
 import 'package:flutter_sixvalley_ecommerce/features/cart/controllers/cart_controller.dart';
 import 'package:flutter_sixvalley_ecommerce/features/notification/provider/notification_provider.dart';
@@ -164,30 +170,42 @@ class _MoreScreenState extends State<MoreScreen> {
                               navigateTo: const SupportTicketScreen()),
 
                           TitleButton(image: Images.termCondition, title: getTranslated('terms_condition', context),
-                              navigateTo: HtmlViewScreen(title: getTranslated('terms_condition', context),
-                                url: Provider.of<SplashProvider>(context, listen: false).configModel!.termsConditions,)),
+                              navigateTo: const TermsAndConditionsScreen(),
+                              // HtmlViewScreen(title: getTranslated('terms_condition', context),
+                              //   url: Provider.of<SplashProvider>(context, listen: false).configModel!.termsConditions,)
+                                ),
 
                           TitleButton(image: Images.privacyPolicy, title: getTranslated('privacy_policy', context),
-                              navigateTo: HtmlViewScreen(title: getTranslated('privacy_policy', context),
-                                url: Provider.of<SplashProvider>(context, listen: false).configModel!.privacyPolicy,)),
+                              navigateTo:  const PrivacyPolicyScreen(),
+                              
+
+                              // HtmlViewScreen(title: getTranslated('privacy_policy', context),
+                              //   url: Provider.of<SplashProvider>(context, listen: false).configModel!.privacyPolicy,)
+                                ),
 
                           if(Provider.of<SplashProvider>(context, listen: false).configModel!.refundPolicy!.status ==1)
                             TitleButton(image: Images.termCondition, title: getTranslated('refund_policy', context),
-                                navigateTo: HtmlViewScreen(title: getTranslated('refund_policy', context),
-                                  url: Provider.of<SplashProvider>(context, listen: false).configModel!.refundPolicy!.content,)),
+                                navigateTo: const RefundPolicyScreen(),
+                                // HtmlViewScreen(title: getTranslated('refund_policy', context),
+                                //   url: Provider.of<SplashProvider>(context, listen: false).configModel!.refundPolicy!.content,)
+                                  ),
 
                           if(Provider.of<SplashProvider>(context, listen: false).configModel!.returnPolicy!.status ==1)
                             TitleButton(image: Images.termCondition, title: getTranslated('return_policy', context),
-                                navigateTo: HtmlViewScreen(title: getTranslated('return_policy', context),
-                                  url: Provider.of<SplashProvider>(context, listen: false).configModel!.returnPolicy!.content,)),
+                                navigateTo: const ReturnPolicyScreen(),
+                                //  HtmlViewScreen(title: getTranslated('return_policy', context),
+                                //   url: Provider.of<SplashProvider>(context, listen: false).configModel!.returnPolicy!.content,)
+                                  ),
 
                           if(Provider.of<SplashProvider>(context, listen: false).configModel!.cancellationPolicy!.status ==1)
                             TitleButton(image: Images.termCondition, title: getTranslated('cancellation_policy', context),
-                                navigateTo: HtmlViewScreen(title: getTranslated('cancellation_policy', context),
-                                  url: Provider.of<SplashProvider>(context, listen: false).configModel!.cancellationPolicy!.content,)),
+                                navigateTo: const CancellationPolicyScreen(),
+                                // HtmlViewScreen(title: getTranslated('cancellation_policy', context),
+                                //   url: Provider.of<SplashProvider>(context, listen: false).configModel!.cancellationPolicy!.content,)
+                                  ),
 
                           TitleButton(image: Images.faq, title: getTranslated('faq', context),
-                              navigateTo: FaqScreen(title: getTranslated('faq', context),)),
+                              navigateTo: FaqQuesScreen( )),
 
                           TitleButton(image: Images.user, title: getTranslated('about_us', context),
                               navigateTo: HtmlViewScreen(title: getTranslated('about_us', context),

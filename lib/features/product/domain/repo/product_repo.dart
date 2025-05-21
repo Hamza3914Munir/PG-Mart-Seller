@@ -42,7 +42,9 @@ class ProductRepo {
   Future<ApiResponse> getSellerProductList(String sellerId, String offset, [String search = '', String? categoryIds, String? brandIds]) async {
     try {
       final response = await dioClient!.get(
-        '${AppConstants.sellerProductUri}$sellerId/products?guest_id=1&limit=10&offset=$offset&search=$search&category=$categoryIds&brand_ids=$brandIds');
+        // 'https://pgmart.shop/api/v1/categories/products/$sellerId'
+        '${AppConstants.sellerProductUri}$sellerId/products?guest_id=1&limit=10&offset=$offset&search=$search&category=$categoryIds&brand_ids=$brandIds'
+        );
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
@@ -81,6 +83,7 @@ class ProductRepo {
   }
 
   Future<ApiResponse> getBrandOrCategoryProductList(bool isBrand, String id) async {
+    print("category id: $id");
     try {
       String uri;
       if(isBrand){

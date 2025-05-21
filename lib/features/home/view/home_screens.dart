@@ -137,7 +137,7 @@ class _HomePageState extends State<HomePage> {
               Navigator.push(context, MaterialPageRoute(builder: (_) => const WishListScreen()));
               },
               ),
-                CartWidgetHomePage(),
+                const CartWidgetHomePage(),
                 ],
               ),
 
@@ -302,14 +302,13 @@ class _HomePageState extends State<HomePage> {
                   ):const SizedBox(),
                   SizedBox(height: Provider.of<SplashProvider>(context, listen: false).configModel!.brandSetting == "1"?Dimensions.paddingSizeSmall: 0),
                   Provider.of<SplashProvider>(context, listen: false).configModel!.brandSetting == "1"?
-                  const BrandView(isHomePage: true) : const SizedBox(),
-
-
-
+                  const BrandView(isHomePage: true)
+                   : const SizedBox(),
 
 
                     //Home category
                     const HomeCategoryProductView(isHomePage: true),
+                    
                     const SizedBox(height: Dimensions.homePagePadding),
 
 

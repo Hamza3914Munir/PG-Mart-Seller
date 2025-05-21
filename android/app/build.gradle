@@ -58,7 +58,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 34
         compileSdkVersion 34
-        versionCode 5
+        versionCode 6
         versionName "2.1.1" 
         multiDexEnabled true
     }
@@ -87,6 +87,7 @@ flutter {
 dependencies {
     // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.google.firebase:firebase-messaging:21.0.1"
+    implementation 'androidx.webkit:webkit:1.10.0'
 
     
 }

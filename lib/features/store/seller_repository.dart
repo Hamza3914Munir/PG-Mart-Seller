@@ -15,4 +15,6 @@ class SellerRepository {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }
+
+
 }

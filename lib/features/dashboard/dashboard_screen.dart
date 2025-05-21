@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_sixvalley_ecommerce/features/category/view/all_category_screen.dart';
 import 'package:flutter_sixvalley_ecommerce/features/store/all_stores.dart';
@@ -47,7 +49,11 @@ class DashBoardScreenState extends State<DashBoardScreen> {
 
         if(!singleVendor)
         // AllSellerScreen
-        NavigationModel(name: 'stores', icon: Images.category, screen: const AllSellerScreen(isBacButtonExist: false)),
+        // CategoryScreen
+        // NavigationModel(name: 'stores', icon: Images.category, screen:  AllSellerScreen(isBacButtonExist: false)),
+         NavigationModel(name: 'stores', icon: Images.category, screen:  const MainCategoriesScreen()),
+        
+        //  NavigationModel(name: 'stores', icon: Images.category, screen:  CategoryScreen(isBacButtonExist: false)),
           // NavigationModel(name: 'categories', icon: Images.category, screen: const AllCategoryScreen(isBacButtonExist: false)),
           NavigationModel(name: 'orders', icon: Images.shoppingImage, screen:  const OrderScreen(isBacButtonExist: false)),
           NavigationModel(name: 'more', icon: Images.moreImage, screen:  const MoreScreen()),
@@ -78,12 +84,17 @@ class DashBoardScreenState extends State<DashBoardScreen> {
         key: _scaffoldKey,
 
         body: PageStorage(bucket: bucket, child: _screens[_pageIndex].screen),
-        bottomNavigationBar: Container(height: 80,
+        bottomNavigationBar: Container(
+          height: Platform.isIOS ? 95 : 75,
+          // height: 105,
           decoration: BoxDecoration(borderRadius: const BorderRadius.vertical(top: Radius.circular(Dimensions.paddingSizeLarge)),
             color: Theme.of(context).cardColor,
             boxShadow: [BoxShadow(offset: const Offset(1,1), blurRadius: 2, spreadRadius: 1, color: Theme.of(context).primaryColor.withOpacity(.125))],),
-          child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: _getBottomWidget(singleVendor),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 22),
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: _getBottomWidget(singleVendor),
+            ),
           ),),
       ),
     );
@@ -128,7 +139,7 @@ class CustomMenuItem extends StatelessWidget {
       highlightColor: Colors.transparent,
       hoverColor: Colors.transparent,
       onTap: onTap,
-      child: Padding(padding:  EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0, bottom: 9),
+      child: Padding(padding:  EdgeInsets.only(top: 5.0, left: 8.0, right: 8.0, bottom: 0),
         child: SizedBox(width: isSelected ? 90 : 50, child: Column(crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: [
 
